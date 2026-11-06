@@ -1,8 +1,8 @@
 # AmazingHand_A1
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Qualcomm%20QCM6490%20%7C%20AidLux%20%7C%20Ubuntu%2024.04-orange)]()
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)]()
+[![Platform](https://img.shields.io/badge/Platform-Qualcomm%20QCM6490%20%7C%20AidLux%20%7C%20Ubuntu%2024.04-orange)](DEPLOY_qcm6490_aidlux.md)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)](tools/requirements.txt)
 
 基于 **Qualcomm QCM6490（AidLux / Ubuntu 24.04）** 板卡驱动 [Pollen Robotics AmazingHand](https://github.com/pollen-robotics/AmazingHand) 灵巧手的**实机验证适配层**。
 

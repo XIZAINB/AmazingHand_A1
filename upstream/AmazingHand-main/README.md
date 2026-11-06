@@ -33,7 +33,7 @@ Amazing Hand is :
 - low-cost (<200€)
 - open-source
 
-[AmazingHand_Overview](/docs/AmazingHand_Overview.pdf)
+[AmazingHand_Overview](docs/AmazingHand_Overview.pdf)
 
 ![Hand Overview](assets/Hand_Overview.jpg)
 Each finger is driven by parallel mechanism. 
@@ -83,8 +83,8 @@ Detailed for custom 3D printed parts are here :
 ![3Dparts](assets/3Dparts.jpg)
 
 Here is guide to explain how to print all the needed custom parts :
-[=> 3D Printing Guide](/docs/AmazingHand_3DprintingTips.pdf)
-![3DPrint_example](/assets/3DPrint.jpg) 
+[=> 3D Printing Guide](docs/AmazingHand_3DprintingTips.pdf)
+![3DPrint_example](assets/3DPrint.jpg) 
 
 
 
@@ -93,20 +93,20 @@ STL and Steps files can be found [here](https://github.com/pollen-robotics/Amazi
 
 Note that Fingers are the same if you want to build a left hand, but some parts are symetrical. Specific right hand parts are preceded by an "R", and other of the left hand parts by an "L".
 
-![Heart](/assets/Heart.jpg)
+![Heart](assets/Heart.jpg)
 
 Everyone can access the Onshape document too:   
 [Link Onshape](https://cad.onshape.com/documents/430ff184cf3dd9557aaff2be/w/e3658b7152c139971d22c688/e/bd399bf1860732c6c6a2ee45?renderMode=0&uiState=6867fd3ef773466d059edf0c)  
 
 Note that predefined position are available in "named position" tooling, with corresponding servos angles
 
-![Onshape&Named_Pos](/assets/Named_Pos.jpg)  
+![Onshape&Named_Pos](assets/Named_Pos.jpg)  
 
 ## Assembly Guide
 
 Assembly guide for the Amazing Hand in combination with standards components in the BOM is here :  
-[=> Assembly Guide](/docs/AmazingHand_Assembly.pdf)  
-![Assembly_example](/assets/Assembly.jpg)  
+[=> Assembly Guide](docs/AmazingHand_Assembly.pdf)  
+![Assembly_example](assets/Assembly.jpg)  
 
 You will need simple program / script to calibrate each fingers, available here :
 - With Python & Waveshare serial bus driver : [here](https://github.com/pollen-robotics/AmazingHand/tree/main/PythonExample)
@@ -188,7 +188,7 @@ You can reach public discord channel here :
 [Discord AmazingHand](https://discord.com/channels/519098054377340948/1395021147346698300)
 
 Or 
-[Contact me or Pollen Robotics](/docs/contact.md)
+[Contact me or Pollen Robotics](docs/contact.md)
 
 ## Thank you
 Huge thanks to those who have contributed to this project so far:

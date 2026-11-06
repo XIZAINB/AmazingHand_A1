@@ -19,11 +19,16 @@ Redistributed upstream snapshot
 --------------------------------------------------------------------------------
 
   upstream/AmazingHand-main/
-      Verbatim snapshot of the upstream AmazingHand repository, redistributed
-      under the Apache License 2.0 (source code) and CC BY 4.0 (mechanical
-      design: cad/, docs/, assets/). All original license files are preserved:
+      Snapshot of the upstream AmazingHand repository, redistributed under the
+      Apache License 2.0 (source code) and CC BY 4.0 (mechanical design:
+      cad/, docs/, assets/). All original license files are preserved:
         upstream/AmazingHand-main/LICENSE
         upstream/AmazingHand-main/Demo/LICENSE
+
+      Only modification: broken root-absolute links in Markdown files
+      ("/assets/...", "/docs/...") were rewritten to relative paths so that
+      images and documents render correctly when this repository is viewed on
+      GitHub. No source code, CAD file or document content was altered.
 
 --------------------------------------------------------------------------------
 Derived files in this repository
