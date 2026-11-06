@@ -1,0 +1,36 @@
+AmazingHand_A1
+Copyright 2026 XIZAINB
+
+This product includes software developed as part of the AmazingHand project.
+
+--------------------------------------------------------------------------------
+Original work
+--------------------------------------------------------------------------------
+
+  AmazingHand
+  https://github.com/pollen-robotics/AmazingHand
+  Copyright Pollen Robotics
+
+  - Source code:        Apache License 2.0
+  - Mechanical design:  Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+--------------------------------------------------------------------------------
+Derived files in this repository
+--------------------------------------------------------------------------------
+
+  tools/hand_demo.py
+      Refactored from  PythonExample/AmazingHand_Demo.py
+      Original gesture logic and motion sequences by Pollen Robotics.
+      Modifications: serial-port auto-detection, servo scanning, --side /
+      --dry-run / --middle-pos / --loops CLI options, Windows COM support.
+
+--------------------------------------------------------------------------------
+Original work in this repository
+--------------------------------------------------------------------------------
+
+  tools/probe_servos.py      Servo bus scanner (position / voltage / temperature)
+  tools/watch_usb.sh         USB device hotplug watcher (Linux)
+  tools/README.md            Deployment notes
+  tools/requirements.txt     Python dependencies
+
+  All files above are licensed under the Apache License 2.0.

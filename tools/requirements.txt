@@ -1,0 +1,4 @@
+# AmazingHand 基础 demo 依赖
+# 安装: pip install -r requirements.txt
+rustypot>=1.13
+numpy>=1.24
