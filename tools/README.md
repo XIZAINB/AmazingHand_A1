@@ -77,6 +77,36 @@ USB-SERIAL CH340 (COM21)        <- ✅ 转接板就是这个
 
 ## 4. 扫描舵机
 
+两个工具，用途不同：
+
+| 脚本 | 用途 |
+|---|---|
+| `scan_bus.py` | 指定单个端口，输出位置/电压/温度/力矩表格（QCM6490 实机验证用） |
+| `probe_servos.py` | 遍历所有候选端口逐个试，自动找出哪个口上挂有舵机 |
+
+### scan_bus.py
+
+```bash
+python scan_bus.py                       # 默认 /dev/ttyUSB0 @ 1000000
+python scan_bus.py /dev/ttyUSB0 1000000
+python scan_bus.py COM21                 # Windows
+```
+
+输出：
+
+```
+端口=/dev/ttyUSB0 波特率=1000000
+  ID     在线    位置(deg)    电压(V)    温度(C)     扭矩
+   1    YES      92.87     51.0       22      1
+   2    YES     -89.94     50.0       23      1
+   ...
+   8    YES     -74.12     50.0       26      1
+
+在线舵机: [1, 2, 3, 4, 5, 6, 7, 8]  共 8/8
+```
+
+### probe_servos.py
+
 ```bash
 python probe_servos.py                  # 自动扫描所有串口
 python probe_servos.py /dev/ttyUSB0     # Linux
@@ -94,6 +124,7 @@ python probe_servos.py COM21            # Windows
 ```
 
 > 电压字段是舵机的**原始单位 0.1 V**，`51.0` 表示 **5.1 V**，不是 51 V。
+> 温度 20~30 ℃ 正常，> 55 ℃ 应停机散热。扭矩 `1`=On / `2`=Off / `3`=Free。
 
 ## 5. 运行手势 Demo
 
@@ -123,7 +154,28 @@ python hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0   # 自定义 8 个中间�
 
 `open_hand` → `close_hand` → `open_hand_progressive` → `spread_hand` → `clench_hand` → `index_pointing` → `nonono` → `perfect` → `victory` → `scissors` → `pinched` → `rock_sign`
 
-## 6. 舵机 ID 分配
+## 6. 闭环验证
+
+下发 `open_hand` 姿态，等待 1.5 s 后回读实际位置，逐 ID 打印误差：
+
+```bash
+python verify_closed_loop.py                     # 默认 /dev/ttyUSB0
+python verify_closed_loop.py /dev/ttyUSB0
+python verify_closed_loop.py COM21               # Windows
+```
+
+```
+ ID       目标       回读       误差
+  1     -32.00    -31.85     0.15
+  2      35.00     34.76     0.24
+  ...
+
+结论: 闭环正常，舵机已跟随目标位
+```
+
+误差阈值 5°，超过说明该手指机械传动或供电有问题。QCM6490 实机测得 8 个舵机均 **< 1.4°**。
+
+## 7. 舵机 ID 分配
 
 每根手指 2 个舵机，`MiddlePos` 中对应索引 `(id-1, id)`：
 
@@ -134,7 +186,7 @@ python hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0   # 自定义 8 个中间�
 | ring | 5, 6 | 4, 5 |
 | thumb | 7, 8 | 6, 7 |
 
-## 7. 标定中间位（重要）
+## 8. 标定中间位（重要）
 
 `hand_demo.py` 里的 `DEFAULT_MIDDLE_POS = [3, 0, -5, -8, -2, 5, -12, 0]` 是**原作者的标定值**，用到你的手上会整体偏移。所有手势都是「中间位 + 偏移量」算出来的，中间位不准 → 手势全歪。
 
@@ -147,7 +199,7 @@ python hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0   # 自定义 8 个中间�
 
 标好之后用 `--middle-pos` 传入验证，确认满意再改代码里的 `DEFAULT_MIDDLE_POS` 默认值。
 
-## 8. 常见问题
+## 9. 常见问题
 
 | 现象 | 原因 / 处理 |
 |---|---|
@@ -160,11 +212,16 @@ python hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0   # 自定义 8 个中间�
 | 手势方向相反 / 撞限位 | `--side` 用反了，或中间位未标定 |
 | 端口号突然变了 | 转接板重新插拔后端口号会变，重新确认 |
 
-## 9. 其他文件
+## 10. 其他文件
 
 | 文件 | 说明 |
 |---|---|
-| `probe_servos.py` | 扫描串口 + 读取每个舵机的位置/电压/温度 |
-| `hand_demo.py` | 基础手势 Demo（支持自动找端口、左右手、dry-run） |
+| `scan_bus.py` | 单端口总线扫描，输出位置/电压/温度/力矩表格 |
+| `probe_servos.py` | 多端口自动探测，找出哪个串口挂有舵机 |
+| `hand_demo.py` | 基础手势 Demo（自动找端口、左右手、dry-run） |
+| `verify_closed_loop.py` | 闭环验证：下发姿态并回读比对误差 |
 | `requirements.txt` | 依赖清单 |
 | `watch_usb.sh` | **仅 Linux** 使用，监听 USB 设备插拔变化。Windows 下用第 3 节的命令代替 |
+
+> 完整实机部署流程（含软硬件实测数据、接线、systemd 开机自启）见仓库根目录的
+> [`DEPLOY_qcm6490_aidlux.md`](../DEPLOY_qcm6490_aidlux.md)。

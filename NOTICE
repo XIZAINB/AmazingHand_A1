@@ -15,6 +15,17 @@ Original work
   - Mechanical design:  Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 --------------------------------------------------------------------------------
+Redistributed upstream snapshot
+--------------------------------------------------------------------------------
+
+  upstream/AmazingHand-main/
+      Verbatim snapshot of the upstream AmazingHand repository, redistributed
+      under the Apache License 2.0 (source code) and CC BY 4.0 (mechanical
+      design: cad/, docs/, assets/). All original license files are preserved:
+        upstream/AmazingHand-main/LICENSE
+        upstream/AmazingHand-main/Demo/LICENSE
+
+--------------------------------------------------------------------------------
 Derived files in this repository
 --------------------------------------------------------------------------------
 
@@ -28,9 +39,12 @@ Derived files in this repository
 Original work in this repository
 --------------------------------------------------------------------------------
 
-  tools/probe_servos.py      Servo bus scanner (position / voltage / temperature)
+  tools/scan_bus.py          Servo bus scan: position / voltage / temp / torque
+  tools/verify_closed_loop.py  Closed-loop pose verification
+  tools/probe_servos.py      Multi-port servo bus scanner (Linux + Windows)
   tools/watch_usb.sh         USB device hotplug watcher (Linux)
   tools/README.md            Deployment notes
   tools/requirements.txt     Python dependencies
+  DEPLOY_qcm6490_aidlux.md   Qualcomm QCM6490 / AidLux deployment guide
 
   All files above are licensed under the Apache License 2.0.

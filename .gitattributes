@@ -12,7 +12,14 @@ NOTICE  text eol=lf
 
 # 二进制文件不做换行转换
 *.step  binary
+*.stp   binary
 *.stl   binary
+*.part  binary
 *.png   binary
 *.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.mp4   binary
 *.pdf   binary
+*.whl   binary
+*.zip   binary

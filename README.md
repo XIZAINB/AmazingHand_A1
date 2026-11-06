@@ -1,18 +1,25 @@
 # AmazingHand_A1
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-AidLux%20Rhino%20Pi%20A1%20%7C%20Ubuntu-orange)]()
-[![Python](https://img.shields.io/badge/Python-3.10-3776AB)]()
+[![Platform](https://img.shields.io/badge/Platform-Qualcomm%20QCM6490%20%7C%20AidLux%20%7C%20Ubuntu%2024.04-orange)]()
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)]()
 
-在 **AidLux Rhino Pi A1（Ubuntu）** 上驱动 [Pollen Robotics AmazingHand](https://github.com/pollen-robotics/AmazingHand) 灵巧手的适配层与工具集。
+基于 **Qualcomm QCM6490（AidLux / Ubuntu 24.04）** 板卡驱动 [Pollen Robotics AmazingHand](https://github.com/pollen-robotics/AmazingHand) 灵巧手的**实机验证适配层**。
 
 > 8 自由度开源灵巧手 · 8 × Feetech SCS0009 总线舵机 · Python + `rustypot`
 
-> **English**: Deployment tooling and a portable Python driver for the
-> [AmazingHand](https://github.com/pollen-robotics/AmazingHand) dexterous hand
-> running on an AidLux Rhino Pi A1 (Ubuntu) single-board computer.
-> The upstream demo hard-codes `COM11`; this repo adds serial auto-detection,
-> servo scanning, left/right hand support and a dry-run mode.
+仓库分两部分：
+
+| 目录 | 内容 |
+|---|---|
+| `upstream/AmazingHand-main/` | 上游 Pollen Robotics 原始资料**完整快照**（CAD / STL / 固件 / 官方示例 / 装配文档 / MuJoCo 仿真） |
+| `tools/` | 本仓库为 QCM6490 (AidLux) 板卡适配、并已在实机验证通过的可运行工具 |
+
+> **English**: A field-verified port of the [AmazingHand](https://github.com/pollen-robotics/AmazingHand)
+> dexterous hand to a Qualcomm QCM6490 board running AidLux / Ubuntu 24.04.
+> The repo ships the full upstream snapshot under `upstream/` plus a hardened
+> `tools/` layer: serial auto-detection, bus scanning, closed-loop verification,
+> left/right hand selection and a dry-run mode.
 
 ---
 
@@ -25,16 +32,17 @@
 - 左右手要手改源码里的 `Side = 1`
 - 没有无硬件调试手段
 
-本仓库是它在 **AidLux Rhino Pi A1** 上的适配版本，改动集中在可移植性与可调试性：
+本仓库是它在 **Qualcomm QCM6490 / AidLux** 上的适配版本，改动集中在可移植性与可调试性：
 
 | 改动 | 说明 |
 |---|---|
 | 串口自动探测 | 不再写死端口。Linux 扫 `/dev/ttyUSB*`、`/dev/ttyACM*`、`/dev/ttyCH343USB*` 等；Windows 用 `pyserial` 枚举真实 COM 口 |
 | 舵机在线扫描 | 启动时扫描 ID 1~8，逐个上报，缺失 ID 会明确列出 |
+| 总线状态诊断 | `scan_bus.py` 一表列出每个舵机的位置 / 电压 / 温度 / 力矩使能 |
+| 闭环验证 | `verify_closed_loop.py` 下发姿态后回读比对，实机误差 < 1.4° |
 | 左右手切换 | `--side right \| left`，无需改源码 |
 | DRY-RUN 模式 | `--dry-run` 不接硬件，只打印每帧目标角度，用于验证逻辑与调试手势 |
 | 中间位可传入 | `--middle-pos` 直接传 8 个标定值，配合标定流程使用 |
-| 状态诊断工具 | `probe_servos.py` 读取每个舵机的位置 / 电压 / 温度 |
 | Windows 兼容 | 同一套代码在 Windows + CH340 转接板上亦可运行 |
 
 ---
@@ -43,7 +51,7 @@
 
 | 部件 | 说明 |
 |---|---|
-| 主控 | AidLux Rhino Pi A1（Ubuntu） |
+| 主控 | Qualcomm QCM6490 (AidLux / Ubuntu 24.04.3 LTS) |
 | 手 | AmazingHand，8 × Feetech **SCS0009** 总线舵机 |
 | 转接板 | Feetech TTL 总线转接板（USB-Serial，CH340 / CP2102 等） |
 | 总线参数 | **1 000 000 bps**，舵机 ID 1~8 |
@@ -57,11 +65,15 @@
 | ring 无名指 | 5, 6 | 4, 5 |
 | thumb 拇指 | 7, 8 | 6, 7 |
 
-> 机械结构、打印件、装配图纸见上游仓库：<https://github.com/pollen-robotics/AmazingHand>（本仓库不重复分发）
+> 机械结构、打印件、装配图纸已包含在本仓库 `upstream/AmazingHand-main/cad/`，
+> 原始出处：<https://github.com/pollen-robotics/AmazingHand>
 
 ---
 
-## 快速开始（AidLux Rhino Pi A1 / Ubuntu）
+## 快速开始
+
+> 完整的**实机部署流程**（含软硬件环境实测数据、接线、systemd 开机自启、API 坑位）见
+> **[DEPLOY_qcm6490_aidlux.md](DEPLOY_qcm6490_aidlux.md)**。下面是最短路径。
 
 ### 1. 克隆与安装依赖
 
@@ -119,6 +131,14 @@ python tools/hand_demo.py --loops 0       # 无限循环，Ctrl+C 停止
 python tools/hand_demo.py --dry-run       # 不接硬件，只打印目标角度
 ```
 
+### 6. 闭环验证（可选）
+
+```bash
+python tools/verify_closed_loop.py /dev/ttyUSB0
+```
+
+下发姿态后回读实际位置，逐 ID 打印误差。实机测得 8 个舵机均 **< 1.4°**。
+
 完整参数与 Windows 下的用法见 **[tools/README.md](tools/README.md)**。
 
 ---
@@ -127,15 +147,26 @@ python tools/hand_demo.py --dry-run       # 不接硬件，只打印目标角度
 
 ```
 AmazingHand_A1/
-├── LICENSE                  Apache 2.0 全文
-├── NOTICE                   上游归属声明（Apache 2.0 §4d 要求）
-├── README.md                本文件
-└── tools/
-    ├── README.md            部署与排障手册（参数表、COM 口识别、常见问题）
-    ├── hand_demo.py         手势 Demo（衍生自上游 PythonExample）
-    ├── probe_servos.py      舵机总线扫描与状态读取
-    ├── requirements.txt     依赖清单
-    └── watch_usb.sh         USB 热插拔监听（Linux）
+├── README.md                    本文件
+├── DEPLOY_qcm6490_aidlux.md     QCM6490 / AidLux 实机部署指南（验证数据、接线、排障）
+├── LICENSE                      Apache 2.0 全文
+├── NOTICE                       上游归属声明（Apache 2.0 §4d 要求）
+│
+├── upstream/AmazingHand-main/   上游 Pollen Robotics 原始快照
+│   ├── PythonExample/           官方 Python 示例（串口写死 COM11）
+│   ├── ArduinoExample/          官方 Arduino 方案 + 中间位标定程序
+│   ├── Demo/                    进阶 demo（IK/FK、Rust 控制、MuJoCo 仿真）
+│   ├── cad/                     STEP / STL 打印件
+│   └── docs/                    装配文档与 PDF
+│
+└── tools/                       本仓库适配层（已在 QCM6490 实机验证）
+    ├── README.md                参数手册与排障
+    ├── scan_bus.py              总线扫描：位置/电压/温度/力矩
+    ├── hand_demo.py             手势 Demo（衍生自上游 PythonExample）
+    ├── verify_closed_loop.py    闭环验证：下发姿态并回读比对误差
+    ├── probe_servos.py          多端口自动探测扫描（Linux + Windows）
+    ├── requirements.txt         依赖清单
+    └── watch_usb.sh             USB 热插拔监听（Linux）
 ```
 
 ---
@@ -145,7 +176,7 @@ AmazingHand_A1/
 所有手势都是「中间位 + 偏移量」算出来的，**中间位不准，手势全歪**。
 `hand_demo.py` 中的 `DEFAULT_MIDDLE_POS = [3, 0, -5, -8, -2, 5, -12, 0]` 是上游作者的标定值，**不能直接用于你的手**。
 
-标定流程参见上游 `ArduinoExample/Hand_FingerMiddlePos`。标好后用
+标定流程参见上游 `upstream/AmazingHand-main/ArduinoExample/Hand_FingerMiddlePos`。标好后用
 
 ```bash
 python tools/hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0
@@ -178,7 +209,9 @@ python tools/hand_demo.py --middle-pos 3 0 -5 -8 -2 5 -12 0
 而该上游项目以 Apache 2.0 发布。Apache 2.0 要求衍生作品保留原许可证并附带归属声明，
 因此本仓库沿用同一协议，归属信息见 [NOTICE](NOTICE)。
 
-上游机械设计（CAD / STL / 装配图纸）另以 **CC BY 4.0** 发布，本仓库不分发这些文件。
+上游机械设计（CAD / STL / 装配图纸）另以 **CC BY 4.0** 发布。
+本仓库的 `upstream/AmazingHand-main/` 为其**原样再分发**，已保留全部原始许可文件；
+如果你要再使用其中的机械设计文件，请遵守 CC BY 4.0 的署名要求。
 
 ---
 
