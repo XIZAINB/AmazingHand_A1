@@ -4,6 +4,8 @@
 [![Platform](https://img.shields.io/badge/Platform-Qualcomm%20QCM6490%20%7C%20AidLux%20%7C%20Ubuntu%2024.04-orange)](DEPLOY_qcm6490_aidlux.md)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)](tools/requirements.txt)
 
+**语言 / Languages**: 简体中文 | [English](README.en.md)
+
 基于 **Qualcomm QCM6490（AidLux / Ubuntu 24.04）** 板卡驱动 [Pollen Robotics AmazingHand](https://github.com/pollen-robotics/AmazingHand) 灵巧手的**实机验证适配层**。
 
 > 8 自由度开源灵巧手 · 8 × Feetech SCS0009 总线舵机 · Python + `rustypot`
@@ -148,6 +150,7 @@ python tools/verify_closed_loop.py /dev/ttyUSB0
 ```
 AmazingHand_A1/
 ├── README.md                    本文件
+├── README.en.md                英文版
 ├── DEPLOY_qcm6490_aidlux.md     QCM6490 / AidLux 实机部署指南（验证数据、接线、排障）
 ├── LICENSE                      Apache 2.0 全文
 ├── NOTICE                       上游归属声明（Apache 2.0 §4d 要求）
@@ -160,7 +163,8 @@ AmazingHand_A1/
 │   └── docs/                    装配文档与 PDF
 │
 └── tools/                       本仓库适配层（已在 QCM6490 实机验证）
-    ├── README.md                参数手册与排障
+    ├── README.md                参数手册与排障（中文）
+    ├── README.en.md             参数手册与排障（英文）
     ├── scan_bus.py              总线扫描：位置/电压/温度/力矩
     ├── hand_demo.py             手势 Demo（衍生自上游 PythonExample）
     ├── verify_closed_loop.py    闭环验证：下发姿态并回读比对误差

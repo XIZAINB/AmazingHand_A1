@@ -2,6 +2,8 @@
 
 通过 USB-TTL 转接板直连舵机总线，用 Python 控制 AmazingHand 灵巧手（8 × Feetech SCS0009 总线舵机，1 Mbps）。
 
+**语言 / Languages**: 简体中文 | [English](README.en.md)
+
 ---
 
 ## 1. 环境
@@ -230,3 +232,5 @@ python verify_closed_loop.py COM21               # Windows
 
 > 完整实机部署流程（含软硬件实测数据、接线、systemd 开机自启）见仓库根目录的
 > [`DEPLOY_qcm6490_aidlux.md`](../DEPLOY_qcm6490_aidlux.md)。
+
+> The English version of this document is [`README.en.md`](README.en.md).
