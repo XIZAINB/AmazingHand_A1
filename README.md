@@ -169,6 +169,10 @@ AmazingHand_A1/
     └── watch_usb.sh             USB 热插拔监听（Linux）
 ```
 
+> 本地工作区还会有一个 `vendor/` 目录，存放厂商提供的原始资料（飞特舵机驱动与上位机、
+> Arduino IDE、SSCOM 串口工具、装配图纸、左右手打印件、`灵巧手装配体.STEP` 等）。
+> 体积大且非本仓库所有，已在 `.gitignore` 中排除，不会随仓库分发。
+
 ---
 
 ## 标定
