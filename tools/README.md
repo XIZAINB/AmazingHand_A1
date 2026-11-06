@@ -190,12 +190,17 @@ python verify_closed_loop.py COM21               # Windows
 
 `hand_demo.py` 里的 `DEFAULT_MIDDLE_POS = [3, 0, -5, -8, -2, 5, -12, 0]` 是**原作者的标定值**，用到你的手上会整体偏移。所有手势都是「中间位 + 偏移量」算出来的，中间位不准 → 手势全歪。
 
-标定方法见开源资料：
+标定方法（以下几种来源内容等价，任选其一）：
 
-```
-机械手材料/机械手材料/00 先看这个/00 TTL串口舵机/arduino程序（MEGA328P开发板）/
-  01 微调MiddlePos值时使用/Amazing_Hand-Finger_Test/
-```
+- **本仓库内（推荐）**
+  - `upstream/AmazingHand-main/PythonExample/AmazingHand_FingerTest.py`
+  - `upstream/AmazingHand-main/PythonExample/AmazingHand_Hand_FingerMiddlePos.py`
+  - `upstream/AmazingHand-main/ArduinoExample/Amazing_Hand-Finger_Test.ino`
+- **厂商资料包**（本地 `vendor/` 目录，体积大，不随仓库分发）
+  ```
+  vendor/00 先看这个/00 TTL串口舵机/arduino程序（MEGA328P开发板）/
+    01 微调MiddlePos值时使用/Amazing_Hand-Finger_Test/
+  ```
 
 标好之后用 `--middle-pos` 传入验证，确认满意再改代码里的 `DEFAULT_MIDDLE_POS` 默认值。
 
